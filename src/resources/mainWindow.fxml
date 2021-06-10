@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.mainWindowController">
+   <children>
+      <TextField fx:id="studentName" layoutX="14.0" layoutY="39.0" />
+      <Text layoutX="14.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter a student name">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Button fx:id="buttonDeleteStudent" layoutX="177.0" layoutY="39.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Delete" />
+      <Button fx:id="buttonSearchUser" layoutX="271.0" layoutY="39.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Search" />
+      <Text layoutX="14.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of rooms">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <TextField fx:id="numberOfRooms" layoutX="14.0" layoutY="120.0" prefHeight="25.0" prefWidth="299.0" />
+      <Text layoutX="480.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Floor number">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <TextField fx:id="floorNumber" layoutX="480.0" layoutY="120.0" />
+      <Text layoutX="637.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room number">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <TextField fx:id="roomNumber" layoutX="637.0" layoutY="120.0" />
+      <Text layoutX="323.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Students name">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <TextField fx:id="studentsName" layoutX="323.0" layoutY="120.0" />
+      <Button fx:id="buttonAddHousehold" layoutX="14.0" layoutY="152.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="299.0" text="Add new record of household" />
+      <Button fx:id="buttonAddStudents" layoutX="323.0" layoutY="152.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="465.0" text="Add new record of students" />
+      <Button fx:id="buttonClearHousehold" layoutX="14.0" layoutY="462.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="299.0" text="Clear all household records" />
+      <Button fx:id="buttonClearStudents" layoutX="321.0" layoutY="462.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="465.0" text="Clear all students records" />
+      <Button fx:id="buttonClearAllRecords" layoutX="600.0" layoutY="520.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="185.0" text="ClearAllRecords" />
+      <Button fx:id="buttonDeleteDataBase" layoutX="600.0" layoutY="560.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="185.0" text="Delete database" />
+      <TableView fx:id="tableHousehold" layoutX="14.0" layoutY="187.0" prefHeight="271.0" prefWidth="299.0">
+        <columns>
+          <TableColumn fx:id="columnId" prefWidth="98.0" text="id" />
+          <TableColumn fx:id="columnRooms" prefWidth="98.0" text="rooms" />
+            <TableColumn fx:id="columnRelevance" prefWidth="98.0" text="relevance" />
+        </columns>
+      </TableView>
+      <TableView fx:id="tableStudents" layoutX="323.0" layoutY="187.0" prefHeight="271.0" prefWidth="465.0">
+        <columns>
+          <TableColumn fx:id="columnName" prefWidth="153.0" text="name" />
+          <TableColumn fx:id="columnFloor" prefWidth="153.0" text="floor" />
+            <TableColumn fx:id="columnRoom" prefWidth="153.0" text="room" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
