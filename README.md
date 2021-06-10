@@ -10,7 +10,7 @@
 В качестве предметной области я выбрала HouSEhold - общежитие. Таблица household включает в себя ID - номер этажа, rooms - количество комнат и relevance - дату последнего обновления. Таблица students включает в себя name - ФИО студента, floor и room - этаж и комната проживания соотвественно.
 
 Схема БД:  
-![schema](https://github.com/kkvotinova/DB-Lab-2/blob/main/resources/schema.png)
+![schema](https://github.com/kkvotinova/DB-Lab-2/blob/master/resources/schema.png)
 
 ### 2.	Реализовать реляционную БД для своей предметной области(все таблицы должны быть не менее чем в третьей нормальной форме)
 
@@ -32,7 +32,7 @@
 
 [3] Все подключения из GUI должны осуществляться выделенным, не root, пользователем; 
 - Я создала пользователя myuser, который имеет доступ только к созданию базы данных
-![usercreate](https://github.com/kkvotinova/DB-Lab-2/blob/main/resources/usercreate.png)
+![usercreate](https://github.com/kkvotinova/DB-Lab-2/blob/master/resources/usercreate.png)
 
 [4] Должен существовать как минимум один индекс, созданный вами по выбранному текстовому не ключевому полю; 
 
