@@ -1,4 +1,4 @@
-create function create_table()
+create or replace function create_table()
 	returns void language sql as $$
 	-- table household
 		create table if not exists household(
@@ -35,7 +35,7 @@ $$;
 
 select "create_table"();
 
-create function get_household()
+create or replace function get_household()
     returns table(
     	id integer,
     	rooms integer,
@@ -46,7 +46,7 @@ create function get_household()
     end
 $$;
 
-create function get_students()
+create or replace function get_students()
     returns table(
     	name text,
     	floor integer,
@@ -67,25 +67,22 @@ create or replace function add_to_students(in name text, in floor integer, in ro
 insert into "students"(name, floor, room) values (name, floor, room)
 $$;
 
-create function clear_household() 
+create or replace function clear_household()
 	returns void language sql as $$ 
 		truncate "household"
 	$$;
 
-create function clear_students()
+create or replace function clear_students()
 	returns void language sql as $$ 
 		truncate "students"
 	$$;
 
-create function clear_all()
+create or replace function clear_all()
 	returns void language sql as $$
-	begin 
-		truncate "household";
-		truncate "students"
-	end
+		truncate "household", "students"
 	$$;
 
-create function find_household(in floor integer)
+create or replace function find_household(in floor integer)
     returns table(
     	id integer,
     	rooms integer,
@@ -96,7 +93,7 @@ create function find_household(in floor integer)
     end
 $$;
 
-create function find_students(in name text)
+create or replace function find_students(in name text)
     returns table(
     	name text,
     	floor integer,
@@ -107,7 +104,7 @@ create function find_students(in name text)
     end
 $$;
 
-create function delete_student_by_name(in name text)
+create or replace function delete_student_by_name(in name text)
 	returns void language plpgsql as $$
 		begin 
 			delete from "students" where students.name = name;

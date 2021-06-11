@@ -70,7 +70,7 @@ create trigger trigger_update
 
 [1]Создание базы данных (важно(!) именно create database, а не только create table) [2]Удаление базы данных [3]Вывод содержимого таблиц [4] Очистка(частичная - одной, и полная - всех) таблиц [5]Добавление новых данных [6]Поиск по заранее выбранному (вами) текстовому не ключевому полю [7]Обновление кортежа [8]Удаление по заранее выбранному текстовому не ключевому полю [9]Удаление конкретной записи, выбранной пользователем [10]Все функции должны быть реализованы как хранимые процедуры  
 
-:x: TODO  
+:heavy_check_mark: Done
 
 ### 5.	Структура проекта:
 
@@ -78,7 +78,8 @@ create trigger trigger_update
 
 ### 6.	Вид приложения:
 
-:x: TODO  
+![homePage](https://github.com/kkvotinova/DB-Lab-2/blob/master/screenshots/homePage.png)
+![mainPage](https://github.com/kkvotinova/DB-Lab-2/blob/master/screenshots/mainPage.png)
 
 ### 7.	Демонстрация работы: 
 
