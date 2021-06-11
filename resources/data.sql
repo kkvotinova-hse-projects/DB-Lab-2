@@ -9,7 +9,7 @@ create table if not exists household
 (
     id integer primary key not null generated always as identity,
     rooms     integer                               not null,
-    relevance timestamptz default current_timestamp not null
+    relevance date default current_timestamp not null
 );
 
 insert into household (rooms, relevance)

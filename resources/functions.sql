@@ -4,7 +4,7 @@ create or replace function create_table()
 		create table if not exists household(
 			id integer primary key not null generated always as identity,
 			rooms integer not null,
-			relevance timestamptz default current_timestamp not null
+			relevance date default current_timestamp not null
 		);
 	-- table students 
 		create table if not exists students(
@@ -19,7 +19,7 @@ create or replace function create_table()
 		create or replace function update_time() returns trigger
 		as $trigger$
 			begin
-				new.relevance = current_timestamp;
+				new.relevance = current_date;
         		return new;
     		end;
 		$trigger$ language plpgsql;
@@ -93,14 +93,14 @@ create or replace function find_household(in floor integer)
     end
 $$;
 
-create or replace function find_students(in name text)
+create or replace function find_students(in inputName text)
     returns table(
     	name text,
     	floor integer,
     	room integer)
     language plpgsql as $$
     begin
-    	return query (select * from students where students.name = name);
+    	return query (select * from students where students.name = inputName);
     end
 $$;
 

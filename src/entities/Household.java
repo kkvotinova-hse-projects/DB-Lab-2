@@ -4,12 +4,14 @@
 
 package entities;
 
+import java.sql.Date;
+
 public class Household {
     private int id;
     private int rooms;
-    private int relevance;
+    private Date relevance;
 
-    public Household(int id, int rooms, int relevance) {
+    public Household(int id, int rooms, Date relevance) {
         setId(id);
         setRelevance(relevance);
         setRooms(rooms);
@@ -23,7 +25,7 @@ public class Household {
         this.rooms = rooms;
     }
 
-    public void setRelevance(int relevance) {
+    public void setRelevance(Date relevance) {
         this.relevance = relevance;
     }
 
@@ -35,7 +37,7 @@ public class Household {
         return rooms;
     }
 
-    public int getRelevance() {
+    public Date getRelevance() {
         return relevance;
     }
 }

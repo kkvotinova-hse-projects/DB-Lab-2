@@ -5,8 +5,11 @@
 package controller;
 
 import java.net.URL;
+import java.sql.*;
 import java.util.ResourceBundle;
 
+import database.DataBaseConnect;
+import entities.Students;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -71,35 +74,85 @@ public class mainWindowController {
     private TableColumn<Household, Integer> columnRooms;
 
     @FXML
-    private TableColumn<Household, Integer> columnRelevance;
+    private TableColumn<Household, Date> columnRelevance;
 
     @FXML
-    private TableView<?> tableStudents;
+    private TableView<Students> tableStudents;
 
     @FXML
-    private TableColumn<?, ?> columnName;
+    private TableColumn<Students, String> columnName;
 
     @FXML
-    private TableColumn<?, ?> columnFloor;
+    private TableColumn<Students, Integer> columnFloor;
 
     @FXML
-    private TableColumn<?, ?> columnRoom;
-
-    ObservableList<Household> householdList = FXCollections.observableArrayList(
-            new Household(1, 326, 25),
-            new Household(2, 101, 26),
-            new Household(3, 404, 27),
-            new Household(4, 125, 250)
-    );
+    private TableColumn<Students, Integer> columnRoom;
 
     @FXML
     void initialize() {
-        buttonAddHousehold.setOnAction(actionEvent -> {
-            columnRooms.setCellValueFactory(new PropertyValueFactory<Household, Integer>("rooms"));
-            columnId.setCellValueFactory(new PropertyValueFactory<Household, Integer>("id"));
-            columnRelevance.setCellValueFactory(new PropertyValueFactory<Household, Integer>("relevance"));
-            tableHousehold.setItems(householdList);
-        });
+        loadDate();
+    }
+
+    Connection connection = null;
+    ResultSet resultSet = null;
+    CallableStatement callableStatement = null;
+    Household household = null;
+    Students students = null;
+
+    ObservableList<Household> householdList = FXCollections.observableArrayList();
+    ObservableList<Students> studentsList = FXCollections.observableArrayList();
+
+    private void loadDate() {
+        connection = DataBaseConnect.getConnect();
+        refreshTable();
+
+        columnRooms.setCellValueFactory(new PropertyValueFactory<Household, Integer>("rooms"));
+        columnId.setCellValueFactory(new PropertyValueFactory<Household, Integer>("id"));
+        columnRelevance.setCellValueFactory(new PropertyValueFactory<Household, Date>("relevance"));
+        tableHousehold.setItems(householdList);
+
+        columnName.setCellValueFactory(new PropertyValueFactory<Students, String>("name"));
+        columnFloor.setCellValueFactory(new PropertyValueFactory<Students, Integer>("floor"));
+        columnRoom.setCellValueFactory(new PropertyValueFactory<Students, Integer>("room"));
+        tableStudents.setItems(studentsList);
+    }
+
+    private void refreshTable() {
+        householdList.clear();
+        try {
+            callableStatement = connection.prepareCall("{call get_household}");
+            callableStatement.execute();
+            ResultSet resultSet = callableStatement.getResultSet();
+
+            while (resultSet.next()) {
+                householdList.add(new Household(
+                        resultSet.getInt("id"),
+                        resultSet.getInt("rooms"),
+                        resultSet.getDate("relevance"))
+                );
+                tableHousehold.setItems(householdList);
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        studentsList.clear();
+        try {
+            callableStatement = connection.prepareCall("{call get_students}");
+            callableStatement.execute();
+            ResultSet resultSet = callableStatement.getResultSet();
+
+            while(resultSet.next()) {
+                studentsList.add(new Students(
+                        resultSet.getString("name"),
+                        resultSet.getInt("floor"),
+                        resultSet.getInt("room"))
+                );
+                tableStudents.setItems(studentsList);
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
     }
 }
 
