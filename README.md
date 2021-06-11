@@ -7,7 +7,7 @@
 
 ### 1.	Придумать свою предметную область и продумать схему БД для неё.
 
-В качестве предметной области я выбрала HouSEhold - общежитие. Таблица household включает в себя ID - номер этажа, rooms - количество комнат и relevance - дату последнего обновления. Таблица students включает в себя name - ФИО студента, floor и room - этаж и комната проживания соотвественно.
+В качестве предметной области я выбрала HouSEhold - общежитие. Таблица household включает в себя ID - номер этажа, rooms - количество свободных комнат и relevance - дату последнего обновления. Таблица students включает в себя name - ФИО студента, floor и room - этаж и комната проживания соотвественно.
 
 Схема БД:  
 ![schema](https://github.com/kkvotinova/DB-Lab-2/blob/master/screenshots/schema.png)
@@ -42,9 +42,27 @@
 create index if not exists name on "students" (name);
 ```
 
-[5] В одной из таблиц должно присутствовать поле, заполняемое/изменяемое только триггером (например, «общая стоимость бронирования» в таблице «бронирования», которое автоматически высчитывается при добавлении/изменении/удалении билетов, входящих в это бронирование) 
+[5] В одной из таблиц должно присутствовать поле, заполняемое/изменяемое только триггером (например, «общая стоимость бронирования» в таблице «бронирования», которое автоматически высчитывается при добавлении/изменении/удалении билетов, входящих в это бронирование)  
 
-relevance меняется после каждого обновления информации об студентах
+relevance меняется после каждого обновления информации о комнатах  
+
+```SQL
+create or replace function update_time() returns trigger
+as $$
+    begin
+        new.relevance = current_timestamp;
+        return new;
+    end;
+$$ language plpgsql;
+
+drop trigger if exists trigger_update on household;
+
+create trigger trigger_update
+    before update on household
+    for each row
+    when (old.rooms is distinct from new.rooms)
+    execute procedure update_time();
+```
 
 :x: TODO  
 
