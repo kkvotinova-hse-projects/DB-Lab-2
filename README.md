@@ -70,15 +70,7 @@ create trigger trigger_update
 
 :heavy_check_mark: Done
 
-### 5.	Структура проекта:
-
-:x: TODO  
-
-### 6.	Вид приложения:
+### 5.	Вид приложения:
 
 ![homePage](https://github.com/kkvotinova/DB-Lab-2/blob/master/screenshots/homePage.png)
 ![mainPage](https://github.com/kkvotinova/DB-Lab-2/blob/master/screenshots/mainPage.png)
-
-### 7.	Демонстрация работы: 
-
-:x: TODO  
