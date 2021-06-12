@@ -8,7 +8,7 @@ create or replace function create_table()
 		);
 	-- table students 
 		create table if not exists students(
-			name  text not null,
+			name  varchar(50) not null,
 			floor integer primary key not null,
 			room  integer not null
 		);
@@ -48,7 +48,7 @@ $$;
 
 create or replace function get_students()
     returns table(
-    	name text,
+    	name varchar,
     	floor integer,
     	room integer)
     language plpgsql as $$
@@ -62,7 +62,7 @@ create or replace function add_to_household(in rooms integer, in relevance date)
 insert into "household"(rooms, relevance) values (rooms, relevance)
 $$;
 
-create or replace function add_to_students(in name text, in floor integer, in room integer)
+create or replace function add_to_students(in name varchar, in floor integer, in room integer)
     returns void language sql as $$
 insert into "students"(name, floor, room) values (name, floor, room)
 $$;
@@ -93,9 +93,9 @@ create or replace function find_household(in floor integer)
     end
 $$;
 
-create or replace function find_students(in inputName text)
+create or replace function find_students(in inputName varchar)
     returns table(
-    	name text,
+    	name varchar,
     	floor integer,
     	room integer)
     language plpgsql as $$
@@ -104,9 +104,9 @@ create or replace function find_students(in inputName text)
     end
 $$;
 
-create or replace function delete_student_by_name(in name text)
+create or replace function delete_student_by_name(in inputName varchar)
 	returns void language plpgsql as $$
 		begin 
-			delete from "students" where students.name = name;
+			delete from "students" where students.name = inputName;
 		end;
 	$$;

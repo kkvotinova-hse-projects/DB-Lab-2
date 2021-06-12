@@ -16,8 +16,8 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Button fx:id="buttonDeleteStudent" layoutX="177.0" layoutY="39.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Delete" />
-      <Button fx:id="buttonSearchUser" layoutX="271.0" layoutY="39.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Search" />
+      <Button fx:id="buttonDeleteStudent" layoutX="177.0" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#clickDelete" prefHeight="25.0" prefWidth="80.0" text="Delete" />
+      <Button fx:id="buttonSearchUser" layoutX="271.0" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#clickSearch" prefHeight="25.0" prefWidth="80.0" text="Search" />
       <Text layoutX="14.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of rooms">
          <font>
             <Font size="14.0" />
@@ -42,12 +42,12 @@
          </font>
       </Text>
       <TextField fx:id="studentsName" layoutX="323.0" layoutY="120.0" />
-      <Button fx:id="buttonAddHousehold" layoutX="14.0" layoutY="152.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="299.0" text="Add new record of household" />
-      <Button fx:id="buttonAddStudents" layoutX="323.0" layoutY="152.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="465.0" text="Add new record of students" />
-      <Button fx:id="buttonClearHousehold" layoutX="14.0" layoutY="462.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="299.0" text="Clear all household records" />
-      <Button fx:id="buttonClearStudents" layoutX="321.0" layoutY="462.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="465.0" text="Clear all students records" />
-      <Button fx:id="buttonClearAllRecords" layoutX="600.0" layoutY="520.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="185.0" text="ClearAllRecords" />
-      <Button fx:id="buttonDeleteDataBase" layoutX="600.0" layoutY="560.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="185.0" text="Delete database" />
+      <Button fx:id="buttonAddHousehold" layoutX="14.0" layoutY="152.0" mnemonicParsing="false" onMouseClicked="#clickRecordHousehold" prefHeight="25.0" prefWidth="299.0" text="Add new record of household" />
+      <Button fx:id="buttonAddStudents" layoutX="323.0" layoutY="152.0" mnemonicParsing="false" onMouseClicked="#clickRecordStudents" prefHeight="25.0" prefWidth="465.0" text="Add new record of students" />
+      <Button fx:id="buttonClearHousehold" layoutX="14.0" layoutY="462.0" mnemonicParsing="false" onMouseClicked="#clickClearHousehold" prefHeight="25.0" prefWidth="299.0" text="Clear all household records" />
+      <Button fx:id="buttonClearStudents" layoutX="321.0" layoutY="462.0" mnemonicParsing="false" onMouseClicked="#clickClearStudents" prefHeight="25.0" prefWidth="465.0" text="Clear all students records" />
+      <Button fx:id="buttonClearAllRecords" layoutX="600.0" layoutY="520.0" mnemonicParsing="false" onMouseClicked="#clickClearAll" prefHeight="25.0" prefWidth="185.0" text="ClearAllRecords" />
+      <Button fx:id="buttonDeleteDataBase" layoutX="600.0" layoutY="560.0" mnemonicParsing="false" onMouseClicked="#clickDeleteDataBase" prefHeight="25.0" prefWidth="185.0" text="Delete database" />
       <TableView fx:id="tableHousehold" layoutX="14.0" layoutY="187.0" prefHeight="271.0" prefWidth="299.0">
         <columns>
           <TableColumn fx:id="columnId" prefWidth="98.0" text="id" />

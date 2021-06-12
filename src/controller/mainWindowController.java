@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import entities.Household;
+import javafx.scene.input.MouseEvent;
 
 public class mainWindowController {
 
@@ -88,23 +89,105 @@ public class mainWindowController {
     @FXML
     private TableColumn<Students, Integer> columnRoom;
 
+
     @FXML
-    void initialize() {
+    void clickClearAll(MouseEvent event) {
+
+    }
+
+    @FXML
+    void clickClearHousehold(MouseEvent event) {
+
+    }
+
+    @FXML
+    void clickClearStudents(MouseEvent event) {
+
+    }
+
+    @FXML
+    void clickDelete(MouseEvent event) {
+    }
+
+    @FXML
+    void clickRecordHousehold(MouseEvent event) {
+
+        if (!numberOfRooms.getText().isEmpty()) {
+            try {
+                int rooms = Integer.parseInt(numberOfRooms.getText());
+                callableStatement = connection.prepareCall("{call add_to_household(" + rooms + "," + "current_date)}");
+                callableStatement.execute();
+                CallableStatement callableStatement1 = connection.prepareCall("{call get_household}");
+                CallableStatement callableStatement2 = connection.prepareCall("{call get_students}");
+                refreshTable(callableStatement1, callableStatement2);
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    void clickRecordStudents(MouseEvent event) {
+        if (!studentsName.getText().isEmpty() || !floorNumber.getText().isEmpty() || !roomNumber.getText().isEmpty()) {
+            try {
+                String name = studentsName.getText();
+                int floor = Integer.parseInt(floorNumber.getText());
+                int room = Integer.parseInt(roomNumber.getText());
+                callableStatement = connection.prepareCall("{call add_to_students('" + name + "'," + floor + "," + room +")}");
+                callableStatement.execute();
+                CallableStatement callableStatement1 = connection.prepareCall("{call get_household}");
+                CallableStatement callableStatement2 = connection.prepareCall("{call get_students}");
+                refreshTable(callableStatement1, callableStatement2);
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    void clickSearch(MouseEvent event) {
+        if (!studentName.getText().isEmpty()) {
+            try {
+                String name = studentName.getText();
+                callableStatement = connection.prepareCall("{call find_students('" + name + "')}");
+                callableStatement.execute();
+                CallableStatement callableStatement1 = callableStatement;
+                resultSet = callableStatement.getResultSet();
+
+                if (resultSet.next()) {
+                    int floor = resultSet.getInt("floor");
+                    callableStatement = connection.prepareCall("{call find_household(" + floor + ")}");
+                    callableStatement.execute();
+                    CallableStatement callableStatement2 = callableStatement;
+                    refreshTable(callableStatement2, callableStatement1);
+                }
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    void clickDeleteDataBase(MouseEvent event) {
+    }
+
+    @FXML
+    void initialize() throws SQLException {
         loadDate();
     }
 
     Connection connection = null;
     ResultSet resultSet = null;
     CallableStatement callableStatement = null;
-    Household household = null;
-    Students students = null;
 
     ObservableList<Household> householdList = FXCollections.observableArrayList();
     ObservableList<Students> studentsList = FXCollections.observableArrayList();
 
-    private void loadDate() {
+    private void loadDate() throws SQLException {
         connection = DataBaseConnect.getConnect();
-        refreshTable();
+        CallableStatement callableStatement1 = connection.prepareCall("{call get_household}");
+        CallableStatement callableStatement2 = connection.prepareCall("{call get_students}");
+        refreshTable(callableStatement1, callableStatement2);
 
         columnRooms.setCellValueFactory(new PropertyValueFactory<Household, Integer>("rooms"));
         columnId.setCellValueFactory(new PropertyValueFactory<Household, Integer>("id"));
@@ -117,12 +200,12 @@ public class mainWindowController {
         tableStudents.setItems(studentsList);
     }
 
-    private void refreshTable() {
+    private void refreshTable(CallableStatement callableStatement1, CallableStatement callableStatement2) {
         householdList.clear();
         try {
-            callableStatement = connection.prepareCall("{call get_household}");
+            callableStatement = callableStatement1;
             callableStatement.execute();
-            ResultSet resultSet = callableStatement.getResultSet();
+            resultSet = callableStatement.getResultSet();
 
             while (resultSet.next()) {
                 householdList.add(new Household(
@@ -138,9 +221,9 @@ public class mainWindowController {
 
         studentsList.clear();
         try {
-            callableStatement = connection.prepareCall("{call get_students}");
+            callableStatement = callableStatement2;
             callableStatement.execute();
-            ResultSet resultSet = callableStatement.getResultSet();
+            resultSet = callableStatement.getResultSet();
 
             while(resultSet.next()) {
                 studentsList.add(new Students(

@@ -24,7 +24,7 @@ alter table household
 
 create table if not exists students
 (
-    name  text                not null,
+    name  varchar(50)         not null,
     floor integer primary key not null,
     room  integer             not null
 );
