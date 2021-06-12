@@ -110,3 +110,10 @@ create or replace function delete_student_by_name(in inputName varchar)
 			delete from "students" where students.name = inputName;
 		end;
 	$$;
+
+create or replace function update_household_by_floor(in floor integer, in value integer)
+    returns void language plpgsql as $$
+        begin
+            update household set rooms = rooms + value where household.id = floor;
+        end;
+    $$;

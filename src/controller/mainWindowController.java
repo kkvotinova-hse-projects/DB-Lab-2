@@ -21,19 +21,7 @@ import javafx.scene.input.MouseEvent;
 public class mainWindowController {
 
     @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
-
-    @FXML
     private TextField studentName;
-
-    @FXML
-    private Button buttonDeleteStudent;
-
-    @FXML
-    private Button buttonSearchUser;
 
     @FXML
     private TextField numberOfRooms;
@@ -46,24 +34,6 @@ public class mainWindowController {
 
     @FXML
     private TextField studentsName;
-
-    @FXML
-    private Button buttonAddHousehold;
-
-    @FXML
-    private Button buttonAddStudents;
-
-    @FXML
-    private Button buttonClearHousehold;
-
-    @FXML
-    private Button buttonClearStudents;
-
-    @FXML
-    private Button buttonClearAllRecords;
-
-    @FXML
-    private Button buttonDeleteDataBase;
 
     @FXML
     private TableView<Household> tableHousehold;
@@ -89,24 +59,77 @@ public class mainWindowController {
     @FXML
     private TableColumn<Students, Integer> columnRoom;
 
-
     @FXML
     void clickClearAll(MouseEvent event) {
-
+        try {
+            callableStatement = connection.prepareCall("{call clear_all()}");
+            callableStatement.execute();
+            CallableStatement callableStatement1 = connection.prepareCall("{call get_household}");
+            CallableStatement callableStatement2 = connection.prepareCall("{call get_students}");
+            refreshTable(callableStatement1, callableStatement2);
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
     }
 
     @FXML
     void clickClearHousehold(MouseEvent event) {
-
+        try {
+            callableStatement = connection.prepareCall("{call clear_household()}");
+            callableStatement.execute();
+            CallableStatement callableStatement1 = connection.prepareCall("{call get_household}");
+            CallableStatement callableStatement2 = connection.prepareCall("{call get_students}");
+            refreshTable(callableStatement1, callableStatement2);
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
     }
 
     @FXML
     void clickClearStudents(MouseEvent event) {
+        try {
+            callableStatement = connection.prepareCall("{call get_students()}");
+            callableStatement.execute();
+            resultSet = callableStatement.getResultSet();
+            while (resultSet.next()) {
+                int floor = resultSet.getInt("floor");
+                callableStatement = connection.prepareCall("{call update_household_by_floor(" + floor + ", 1)}");
+                callableStatement.execute();
+            }
+            callableStatement = connection.prepareCall("{call clear_students()}");
+            callableStatement.execute();
 
+            CallableStatement callableStatement1 = connection.prepareCall("{call get_household}");
+            CallableStatement callableStatement2 = connection.prepareCall("{call get_students}");
+            refreshTable(callableStatement1, callableStatement2);
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
     }
 
     @FXML
     void clickDelete(MouseEvent event) {
+        if (!studentName.getText().isEmpty()) {
+            try {
+                String name = studentName.getText();
+                callableStatement = connection.prepareCall("{call find_students('" + name + "')}");
+                callableStatement.execute();
+                resultSet = callableStatement.getResultSet();
+                if (resultSet.next()) {
+                    int floor = resultSet.getInt("floor");
+                    callableStatement = connection.prepareCall("{call update_household_by_floor(" + floor + ", 1)}");
+                    callableStatement.execute();
+                }
+                callableStatement = connection.prepareCall("{call delete_student_by_name('" + name + "')}");
+                callableStatement.execute();
+
+                CallableStatement callableStatement1 = connection.prepareCall("{call get_household}");
+                CallableStatement callableStatement2 = connection.prepareCall("{call get_students}");
+                refreshTable(callableStatement1, callableStatement2);
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+        }
     }
 
     @FXML
@@ -135,6 +158,8 @@ public class mainWindowController {
                 int room = Integer.parseInt(roomNumber.getText());
                 callableStatement = connection.prepareCall("{call add_to_students('" + name + "'," + floor + "," + room +")}");
                 callableStatement.execute();
+                callableStatement = connection.prepareCall("{call update_household_by_floor(" + floor + ", -1)}");
+                callableStatement.execute();
                 CallableStatement callableStatement1 = connection.prepareCall("{call get_household}");
                 CallableStatement callableStatement2 = connection.prepareCall("{call get_students}");
                 refreshTable(callableStatement1, callableStatement2);
@@ -145,7 +170,7 @@ public class mainWindowController {
     }
 
     @FXML
-    void clickSearch(MouseEvent event) {
+    void clickSearch(MouseEvent event) throws SQLException {
         if (!studentName.getText().isEmpty()) {
             try {
                 String name = studentName.getText();
@@ -164,6 +189,10 @@ public class mainWindowController {
             } catch (SQLException sqlException) {
                 sqlException.printStackTrace();
             }
+        } else {
+            CallableStatement callableStatement1 = connection.prepareCall("{call get_household}");
+            CallableStatement callableStatement2 = connection.prepareCall("{call get_students}");
+            refreshTable(callableStatement1, callableStatement2);
         }
     }
 
